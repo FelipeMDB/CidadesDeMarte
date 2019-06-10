@@ -10,10 +10,17 @@ public class NoArvore<Dado> where Dado : IComparable<Dado>
     private NoArvore<Dado> dir;
     private Dado info;
 
-    public NoArvore(NoArvore<Dado> esq, NoArvore<Dado> dir)
+    public NoArvore(NoArvore<Dado> esq, NoArvore<Dado> dir, Dado info)
     {
         Esq = esq;
         Dir = dir;
+        Info = info;
+    }
+
+    public NoArvore(Dado info)
+    {
+        Esq = null;
+        Dir = null;
         Info = info;
     }
 

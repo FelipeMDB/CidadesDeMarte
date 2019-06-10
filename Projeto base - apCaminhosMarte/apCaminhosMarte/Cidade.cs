@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace apCaminhosMarte
 {
-    class Cidade
+    class Cidade : IComparable<Cidade>
     {
         int idCidade;
         const int tamanhoIdCidade = 3;
@@ -17,7 +17,9 @@ namespace apCaminhosMarte
         int coordenadaY;
         const int tamanhoCoordenadaY = 5;
 
-
-
+        public int CompareTo(Cidade other)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
