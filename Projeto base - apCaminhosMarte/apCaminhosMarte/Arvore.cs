@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-public class Arvore<Dado> : IComparable<Arvore<Dado>> where Dado : IComparable<Dado>
+public class Arvore<Dado> where Dado : IComparable<Dado>
 {
     protected NoArvore<Dado> raiz, atual, antecessor;
     protected int quantosNos;
@@ -60,10 +60,15 @@ public class Arvore<Dado> : IComparable<Arvore<Dado>> where Dado : IComparable<D
         else
         {
             var novoNo = new NoArvore<Dado>(incluido);
-            if (incluido.CompareTo(antecessor.Info) < 0)
-                antecessor.Esq = novoNo;
+            if (antecessor != null)
+            {
+                if (incluido.CompareTo(antecessor.Info) < 0)
+                    antecessor.Esq = novoNo;
+                else
+                    antecessor.Dir = novoNo;
+            }
             else
-                antecessor.Dir = novoNo;
+                Raiz = novoNo;
             quantosNos++;
         }
     }

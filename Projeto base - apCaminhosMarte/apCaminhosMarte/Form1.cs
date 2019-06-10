@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 
 namespace apCaminhosMarte
@@ -30,7 +31,11 @@ namespace apCaminhosMarte
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            cidades = new Arvore<Cidade>();
+            StreamReader arq = new StreamReader("CidadesMarte.txt");
 
+            while (!arq.EndOfStream)
+                cidades.Incluir(Cidade.LerArquivo(arq));
         }
     }
 }
