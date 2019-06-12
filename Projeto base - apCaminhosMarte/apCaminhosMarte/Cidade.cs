@@ -21,7 +21,12 @@ namespace apCaminhosMarte
         int coordenadaY;
         const int tamanhoCoordenadaY = 5;
         const int inicioCoordenadaY = inicioCoordenadaX + tamanhoCoordenadaX;
-             
+
+        public int IdCidade { get => idCidade; set => idCidade = value; }
+        public string NomeCidade { get => nomeCidade; set => nomeCidade = value; }
+        public int CoordenadaX { get => coordenadaX; set => coordenadaX = value; }
+        public int CoordenadaY { get => coordenadaY; set => coordenadaY = value; }
+
         public Cidade(int id, string nome, int x, int y)
         {
             idCidade = id;

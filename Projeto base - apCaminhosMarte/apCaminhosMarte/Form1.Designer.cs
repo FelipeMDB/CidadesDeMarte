@@ -317,16 +317,18 @@
             this.pbMapa.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbMapa.TabIndex = 0;
             this.pbMapa.TabStop = false;
+            this.pbMapa.Paint += new System.Windows.Forms.PaintEventHandler(this.pbMapa_Paint);
             // 
             // tpArvore
             // 
+            this.tpArvore.BackColor = System.Drawing.Color.Transparent;
             this.tpArvore.Location = new System.Drawing.Point(4, 22);
             this.tpArvore.Name = "tpArvore";
             this.tpArvore.Padding = new System.Windows.Forms.Padding(3);
             this.tpArvore.Size = new System.Drawing.Size(1318, 525);
             this.tpArvore.TabIndex = 1;
             this.tpArvore.Text = "Árvore de Cidades";
-            this.tpArvore.UseVisualStyleBackColor = true;
+            this.tpArvore.Paint += new System.Windows.Forms.PaintEventHandler(this.tpArvore_Paint);
             // 
             // Form1
             // 
