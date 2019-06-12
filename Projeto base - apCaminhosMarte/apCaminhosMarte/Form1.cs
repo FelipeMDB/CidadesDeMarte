@@ -35,7 +35,17 @@ namespace apCaminhosMarte
             StreamReader arq = new StreamReader("CidadesMarte.txt");
 
             while (!arq.EndOfStream)
-                cidades.Incluir(Cidade.LerArquivo(arq));
+            {
+                Cidade cid = Cidade.LerArquivo(arq);
+                cidades.Incluir(cid);
+                DesenharCidade(cid);
+            }
+            arq.Close();
+        }
+
+        private void DesenharCidade(Cidade c)
+        {
+
         }
     }
 }
