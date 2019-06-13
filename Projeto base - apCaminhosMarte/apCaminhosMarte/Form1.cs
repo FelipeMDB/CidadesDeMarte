@@ -18,7 +18,7 @@ namespace apCaminhosMarte
         int[,] adjacencias;
         PilhaLista<int> caminho;
         bool[] cidadesPercorridas;
-
+        bool percorreuTodosOsCaminhosPossiveis;
 
         public Form1()
         {
@@ -38,7 +38,13 @@ namespace apCaminhosMarte
 
             cidadesPercorridas = new bool[23];
             caminhosPossiveis = new List<PilhaLista<int>>();
+
             BuscarCaminhos(idCidadeOrigem, idCidadeDestino, 0);
+            while (!percorreuTodosOsCaminhosPossiveis)
+            {
+                AcharOutroCaminhoPossivel();
+                BuscarCaminhos(idCidadeOrigem, idCidadeDestino, caminho.OTopo());
+            }
 
             string s="";
             while(!caminho.EstaVazia())
@@ -51,7 +57,12 @@ namespace apCaminhosMarte
 
         private void BuscarCaminhos(int idOrigem, int idDestino, int indiceInicial)
         {
-            if (idOrigem != idDestino)
+            if(idOrigem == idDestino)
+            {
+                caminho.Empilhar(idDestino);
+                caminhosPossiveis.Add(caminho);
+            }
+            else 
             {
                 int c = -1;
                 for (int i = indiceInicial; i < adjacencias.GetLength(0); i++)
@@ -74,11 +85,6 @@ namespace apCaminhosMarte
                     BuscarCaminhos(c, idDestino, 0);
                 }
             }
-            else
-            {
-                caminho.Empilhar(idDestino);
-                caminhosPossiveis.Add(caminho);
-            }
         }
 
         private void Retornar(int idOrigem, int idDestino)
@@ -87,6 +93,10 @@ namespace apCaminhosMarte
             BuscarCaminhos(c, idDestino, idOrigem + 1);
         }
         
+        private void AcharOutroCaminhoPossivel()
+        {
+
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
