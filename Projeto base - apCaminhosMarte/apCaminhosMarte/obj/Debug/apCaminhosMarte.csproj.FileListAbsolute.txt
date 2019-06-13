@@ -18,7 +18,6 @@ C:\Users\Pichau\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\a
 C:\Users\Pichau\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.csproj.CoreCompileInputs.cache
 C:\Users\Pichau\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.exe
 C:\Users\Pichau\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.pdb
-C:\Users\u18183\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.csprojResolveAssemblyReference.cache
 C:\Users\u18183\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.Form1.resources
 C:\Users\u18183\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.Properties.Resources.resources
 C:\Users\u18183\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.csproj.GenerateResource.Cache
@@ -28,3 +27,4 @@ C:\Users\u18183\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\a
 C:\Users\u18183\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\bin\Debug\apCaminhosMarte.pdb
 C:\Users\u18183\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.exe
 C:\Users\u18183\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.pdb
+C:\Users\u18183\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.csprojResolveAssemblyReference.cache
