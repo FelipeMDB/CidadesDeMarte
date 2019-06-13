@@ -14,7 +14,12 @@ namespace apCaminhosMarte
     public partial class Form1 : Form
     {
         Arvore<Cidade> cidades;
-        ListaSimples<PilhaLista<CaminhoEntreCidades>> caminhos;
+        List<PilhaLista<int>> caminhosPossiveis;
+        int[,] adjacencias;
+        PilhaLista<int> caminho;
+        bool[] cidadesPercorridas;
+
+
         public Form1()
         {
             InitializeComponent();
@@ -28,10 +33,66 @@ namespace apCaminhosMarte
         private void BtnBuscar_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Buscar caminhos entre cidades selecionadas");
+            int idCidadeOrigem = Int32.Parse((lsbOrigem.SelectedIndex.ToString().Split('-'))[0]);
+            int idCidadeDestino = Int32.Parse((lsbDestino.SelectedIndex.ToString().Split('-'))[0]);
+
+            cidadesPercorridas = new bool[23];
+            caminhosPossiveis = new List<PilhaLista<int>>();
+            BuscarCaminhos(idCidadeOrigem, idCidadeDestino, 0);
+
+            string s="";
+            while(!caminho.EstaVazia())
+            {
+                s+=caminho.Desempilhar().ToString()+" ";
+            }
+            MessageBox.Show(s);
+
         }
+
+        private void BuscarCaminhos(int idOrigem, int idDestino, int indiceInicial)
+        {
+            if (idOrigem != idDestino)
+            {
+                int c = -1;
+                for (int i = indiceInicial; i < adjacencias.GetLength(0); i++)
+                {
+                    if (adjacencias[idOrigem, i] != 0 && cidadesPercorridas[i] == false)
+                    {
+                        if (caminho.EstaVazia() || i != caminho.OTopo())
+                        {
+                            c = i;
+                            break;
+                        }
+                    }
+                }
+                if (c == -1)
+                    Retornar(idOrigem, idDestino);
+                else
+                {
+                    cidadesPercorridas[idOrigem] = true;
+                    caminho.Empilhar(idOrigem);
+                    BuscarCaminhos(c, idDestino, 0);
+                }
+            }
+            else
+            {
+                caminho.Empilhar(idDestino);
+                caminhosPossiveis.Add(caminho);
+            }
+        }
+
+        private void Retornar(int idOrigem, int idDestino)
+        {
+            int c = caminho.Desempilhar();
+            BuscarCaminhos(c, idDestino, idOrigem + 1);
+        }
+        
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            lsbOrigem.Items.Clear();
+            lsbDestino.Items.Clear();
+            caminho = new PilhaLista<int>();
             cidades = new Arvore<Cidade>();
             StreamReader arq = new StreamReader("CidadesMarte.txt");
 
@@ -39,6 +100,25 @@ namespace apCaminhosMarte
             {
                 Cidade cid = Cidade.LerArquivo(arq);
                 cidades.Incluir(cid);
+            }
+            arq.Close();
+
+            arq = new StreamReader("CidadesMarteOrdenado.txt");
+            while (!arq.EndOfStream)
+            {
+                Cidade cid = Cidade.LerArquivo(arq);
+                lsbOrigem.Items.Add(cid.IdCidade + "-" + cid.NomeCidade);
+                lsbDestino.Items.Add(cid.IdCidade + "-" + cid.NomeCidade);
+            }
+            arq.Close();
+
+            adjacencias = new int[cidades.QuantosDados,cidades.QuantosDados];
+            arq = new StreamReader("CaminhosEntreCidadesMarte.txt");
+            while(!arq.EndOfStream)
+            {
+                CaminhoEntreCidades caminho = CaminhoEntreCidades.LerArquivo(arq);
+                adjacencias[caminho.IdCidadeOrigem, caminho.IdCidadeDestino] = caminho.Distancia;
+                adjacencias[caminho.IdCidadeDestino, caminho.IdCidadeOrigem] = caminho.Distancia;
             }
             arq.Close();
 
