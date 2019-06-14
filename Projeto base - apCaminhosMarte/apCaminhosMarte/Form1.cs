@@ -168,12 +168,12 @@ namespace apCaminhosMarte
                 if (primeiraVez)
                     yf = 25;
                 g.DrawLine(caneta, x, y, xf, yf);
-                // sleep(100);
+                
                 DesenharArvore(false, raiz.Esq, xf, yf, Math.PI / 2 + incremento,
                                                  incremento * 0.60, comprimento * 0.8, g);
                 DesenharArvore(false, raiz.Dir, xf, yf, Math.PI / 2 - incremento,
                                                   incremento * 0.60, comprimento * 0.8, g);
-                // sleep(100);
+                
                 SolidBrush preenchimento = new SolidBrush(Color.Cyan);
                 g.FillEllipse(preenchimento, xf - 15, yf - 15, 30, 30);
                 g.DrawString(raiz.Info.IdCidade + "-" + raiz.Info.NomeCidade, new Font("Comic Sans", 12),
