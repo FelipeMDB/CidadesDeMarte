@@ -19,6 +19,7 @@ namespace apCaminhosMarte
         PilhaLista<int> caminho;
         bool[] cidadesPercorridas;
         bool percorreuTodosOsCaminhosPossiveis;
+        PilhaLista<int> caminhoASerMostrado;
 
         public Form1()
         {
@@ -111,7 +112,7 @@ namespace apCaminhosMarte
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            lsbOrigem.Items.Clear();
+               lsbOrigem.Items.Clear();
             lsbDestino.Items.Clear();
             caminho = new PilhaLista<int>();
             cidades = new Arvore<Cidade>();
@@ -193,6 +194,9 @@ namespace apCaminhosMarte
         {
             Graphics gr = e.Graphics;
             DesenharCidade(cidades.Raiz, gr);
+            if (caminhoASerMostrado != null)
+                DesenharCaminho(caminhoASerMostrado, e.Graphics);
+
         }
 
         private void tpArvore_Paint(object sender, PaintEventArgs e)
@@ -200,6 +204,38 @@ namespace apCaminhosMarte
             Graphics gr = e.Graphics;
             DesenharArvore(true, cidades.Raiz, (int)tpArvore.Width / 2, 0, Math.PI / 2,
                                  Math.PI / 2.5, 300, gr);
+        }
+
+        private void DesenharCaminho(PilhaLista<int> caminho, Graphics g)
+        {
+            Pen caneta = new Pen(Color.Red);
+
+            int idCidadeAnterior = caminho.Desempilhar();
+            cidades.Existe(new Cidade(idCidadeAnterior, " ", 0, 0));
+            Cidade cidadeAnterior = cidades.Atual.Info;
+
+            while (!caminho.EstaVazia())
+            {
+                int idCidade = caminho.Desempilhar();
+                cidades.Existe(new Cidade(idCidade, " ",0,0));
+                Cidade cidade = cidades.Atual.Info;
+
+                int x1 = (cidadeAnterior.CoordenadaX * pbMapa.Width) / 4096;
+                int y1 = (cidadeAnterior.CoordenadaY * pbMapa.Height) / 2048;
+
+
+                int x2 = (cidade.CoordenadaX * pbMapa.Width) / 4096;
+                int y2 = (cidade.CoordenadaY * pbMapa.Height) / 2048;
+
+                g.DrawLine(caneta, x1, y1, x2, y2);
+                cidadeAnterior = cidade;
+            }
+        }
+
+        private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            pbMapa.Invalidate();
+            
         }
     }
 }
