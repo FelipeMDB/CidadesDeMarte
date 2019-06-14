@@ -39,7 +39,7 @@ namespace apCaminhosMarte
         {
             string linha = arq.ReadLine();
             int idCidade = int.Parse(linha.Substring(inicioIdCidade, tamanhoIdCidade));
-            string nomeCidade = linha.Substring(inicioNomeCidade, tamanhoNomeCidade);
+            string nomeCidade = linha.Substring(inicioNomeCidade, tamanhoNomeCidade).Trim();
             int coordenadaX = int.Parse(linha.Substring(inicioCoordenadaX, tamanhoCoordenadaX));
             int coordenadaY = int.Parse(linha.Substring(inicioCoordenadaY, tamanhoCoordenadaY));
             return new Cidade(idCidade, nomeCidade, coordenadaX, coordenadaY);
