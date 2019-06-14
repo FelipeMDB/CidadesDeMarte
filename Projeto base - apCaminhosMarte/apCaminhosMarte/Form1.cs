@@ -252,8 +252,8 @@ namespace apCaminhosMarte
         {
             int linha = 0;
             int coluna;
-            dataGridView1.RowCount = cidades.QuantosDados;
-            dataGridView1.ColumnCount = 0;
+            dataGridView1.RowCount = caminhosPossiveis.Count;
+            dataGridView1.ColumnCount = 1;
             foreach (var caminho in caminhosPossiveis)
             {
                 if (caminho.Tamanho() > dataGridView1.ColumnCount)
