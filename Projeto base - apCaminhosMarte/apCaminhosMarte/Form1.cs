@@ -95,7 +95,7 @@ namespace apCaminhosMarte
         
         private void AcharOutroCaminhoPossivel()
         {
-
+            int c = caminho.Desempilhar();
         }
 
         private void Form1_Load(object sender, EventArgs e)
