@@ -43,16 +43,21 @@ namespace apCaminhosMarte
             while (!percorreuTodosOsCaminhosPossiveis)
             {
                 //AcharOutroCaminhoPossivel();
+                cidadesPercorridas = new bool[23];
                 int idOrigem = caminho.Desempilhar();
                 Retornar(idOrigem, idCidadeDestino);
             }
 
             string s="";
-            while(!caminho.EstaVazia())
+            for(int i=0; i < caminhosPossiveis.Count;i++)
             {
-                s+=caminho.Desempilhar().ToString()+" ";
+                PilhaLista<int> caminhoAtual = caminhosPossiveis[i].Clone();
+
+                while(!caminhoAtual.EstaVazia())
+                    s+=caminhoAtual.Desempilhar().ToString()+" ";
+
+                MessageBox.Show(s);
             }
-            MessageBox.Show(s);
 
         }
 

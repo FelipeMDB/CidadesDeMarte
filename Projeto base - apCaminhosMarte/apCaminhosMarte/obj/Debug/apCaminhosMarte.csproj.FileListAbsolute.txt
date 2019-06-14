@@ -28,3 +28,13 @@ C:\Users\u18183\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\a
 C:\Users\u18183\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.exe
 C:\Users\u18183\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.pdb
 C:\Users\u18183\Documents\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.csprojResolveAssemblyReference.cache
+C:\Users\gabri\OneDrive\Documentos\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\bin\Debug\apCaminhosMarte.exe.config
+C:\Users\gabri\OneDrive\Documentos\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\bin\Debug\apCaminhosMarte.exe
+C:\Users\gabri\OneDrive\Documentos\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\bin\Debug\apCaminhosMarte.pdb
+C:\Users\gabri\OneDrive\Documentos\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.csprojAssemblyReference.cache
+C:\Users\gabri\OneDrive\Documentos\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.Form1.resources
+C:\Users\gabri\OneDrive\Documentos\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.Properties.Resources.resources
+C:\Users\gabri\OneDrive\Documentos\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.csproj.GenerateResource.cache
+C:\Users\gabri\OneDrive\Documentos\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.csproj.CoreCompileInputs.cache
+C:\Users\gabri\OneDrive\Documentos\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.exe
+C:\Users\gabri\OneDrive\Documentos\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.pdb
