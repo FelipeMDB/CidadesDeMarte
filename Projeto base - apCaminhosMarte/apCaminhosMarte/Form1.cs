@@ -59,6 +59,7 @@ namespace apCaminhosMarte
 
                 MessageBox.Show(s);
             }
+            ExibirCaminhos();
 
         }
 
@@ -236,6 +237,23 @@ namespace apCaminhosMarte
         {
             pbMapa.Invalidate();
             
+        }
+
+        private void ExibirCaminhos()
+        {
+            int linha = 0;
+            int coluna;
+            foreach(var caminho in caminhosPossiveis)
+            {
+                coluna = 0;
+                var aux = caminho.Clone();
+                while(!aux.EstaVazia())
+                {
+                    dataGridView1.Rows[linha].Cells[coluna].Value = aux.Desempilhar();
+                    coluna++;
+                }
+                linha++;
+            }
         }
     }
 }
