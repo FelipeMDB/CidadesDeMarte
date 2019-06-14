@@ -41,18 +41,18 @@ public class PilhaLista<Dado> : IStack<Dado> where Dado : IComparable<Dado>
     return o; // devolve o objeto que estava no topo
   }
 
-    //public PilhaLista<Dado> Clone()
-    //{
-    //    PilhaLista<Dado> aux = new PilhaLista<Dado>();
-    //    while (!this.EstaVazia())
-    //        aux.Empilhar(this.Desempilhar());
-    //    PilhaLista<Dado> copia = new PilhaLista<Dado>();
-    //    while(!aux.EstaVazia())
-    //    {
-    //        Dado d = aux.Desempilhar();
-    //        this.Empilhar(d);
-    //        copia.Empilhar((Dado)d.Clone());
-    //    }
-    //    return copia;
-    //}
+    public PilhaLista<Dado> Clone()
+    {
+        PilhaLista<Dado> aux = new PilhaLista<Dado>();
+        while (!this.EstaVazia())
+            aux.Empilhar(this.Desempilhar());
+        PilhaLista<Dado> copia = new PilhaLista<Dado>();
+        while (!aux.EstaVazia())
+        {
+            Dado d = aux.Desempilhar();
+            this.Empilhar(d);
+            copia.Empilhar(d);
+        }
+        return copia;
+    }
 }

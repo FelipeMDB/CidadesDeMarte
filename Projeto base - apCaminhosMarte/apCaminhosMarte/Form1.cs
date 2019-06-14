@@ -33,8 +33,8 @@ namespace apCaminhosMarte
         private void BtnBuscar_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Buscar caminhos entre cidades selecionadas");
-            int idCidadeOrigem = Int32.Parse((lsbOrigem.SelectedIndex.ToString().Split('-'))[0]);
-            int idCidadeDestino = Int32.Parse((lsbDestino.SelectedIndex.ToString().Split('-'))[0]);
+            int idCidadeOrigem = Int32.Parse(lsbOrigem.SelectedIndex.ToString().Split('-')[0]);
+            int idCidadeDestino = Int32.Parse(lsbDestino.SelectedIndex.ToString().Split('-')[0]);
 
             cidadesPercorridas = new bool[23];
             caminhosPossiveis = new List<PilhaLista<int>>();
@@ -42,8 +42,9 @@ namespace apCaminhosMarte
             BuscarCaminhos(idCidadeOrigem, idCidadeDestino, 0);
             while (!percorreuTodosOsCaminhosPossiveis)
             {
-                AcharOutroCaminhoPossivel();
-                BuscarCaminhos(idCidadeOrigem, idCidadeDestino, caminho.OTopo());
+                //AcharOutroCaminhoPossivel();
+                int idOrigem = caminho.Desempilhar();
+                Retornar(idOrigem, idCidadeDestino);
             }
 
             string s="";
@@ -60,7 +61,7 @@ namespace apCaminhosMarte
             if(idOrigem == idDestino)
             {
                 caminho.Empilhar(idDestino);
-                caminhosPossiveis.Add(caminho);
+                caminhosPossiveis.Add(caminho.Clone());
             }
             else 
             {
@@ -77,7 +78,12 @@ namespace apCaminhosMarte
                     }
                 }
                 if (c == -1)
-                    Retornar(idOrigem, idDestino);
+                {
+                    if (caminho.EstaVazia())
+                        percorreuTodosOsCaminhosPossiveis = true;
+                    else
+                        Retornar(idOrigem, idDestino);
+                }
                 else
                 {
                     cidadesPercorridas[idOrigem] = true;
@@ -93,10 +99,10 @@ namespace apCaminhosMarte
             BuscarCaminhos(c, idDestino, idOrigem + 1);
         }
         
-        private void AcharOutroCaminhoPossivel()
-        {
-            int c = caminho.Desempilhar();
-        }
+        //private void AcharOutroCaminhoPossivel()
+        //{
+        //    int c = caminho.Desempilhar();
+        //}
 
         private void Form1_Load(object sender, EventArgs e)
         {
