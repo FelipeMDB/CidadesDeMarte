@@ -40,7 +40,7 @@ namespace apCaminhosMarte
 
             if (idCidadeOrigem == idCidadeDestino)
             {
-                MessageBox.Show("Seu ponto de partido é o mesmo que o seu destino!");
+                MessageBox.Show("Seu ponto de partida é o mesmo que o seu destino!");
             }
             else
             {
