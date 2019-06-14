@@ -33,44 +33,52 @@ namespace apCaminhosMarte
 
         private void BtnBuscar_Click(object sender, EventArgs e)
         {
+
             MessageBox.Show("Buscar caminhos entre cidades selecionadas");
             int idCidadeOrigem = Int32.Parse(lsbOrigem.SelectedIndex.ToString().Split('-')[0]);
             int idCidadeDestino = Int32.Parse(lsbDestino.SelectedIndex.ToString().Split('-')[0]);
 
-            cidadesPercorridas = new bool[cidades.QuantosDados];
-            caminhosPossiveis = new List<PilhaLista<int>>();
-            caminho = new PilhaLista<int>();
-            percorreuTodosOsCaminhosPossiveis = false;
-
-            BuscarCaminhos(idCidadeOrigem, idCidadeDestino, 0);
-            while (!percorreuTodosOsCaminhosPossiveis)
+            if (idCidadeOrigem == idCidadeDestino)
             {
-                int idOrigem = caminho.Desempilhar();
-                Retornar(idOrigem, idCidadeDestino);
+                MessageBox.Show("Seu ponto de partido é o mesmo que o seu destino!");
             }
-
-            for(int i=0; i < caminhosPossiveis.Count;i++)
+            else
             {
-                string s = "";
-                PilhaLista<int> caminhoAtual = caminhosPossiveis[i].Clone();
+                cidadesPercorridas = new bool[cidades.QuantosDados];
+                caminhosPossiveis = new List<PilhaLista<int>>();
+                caminho = new PilhaLista<int>();
+                percorreuTodosOsCaminhosPossiveis = false;
 
-                while(!caminhoAtual.EstaVazia())
-                    s+=caminhoAtual.Desempilhar().ToString()+" ";
+                BuscarCaminhos(idCidadeOrigem, idCidadeDestino, 0);
+                while (!percorreuTodosOsCaminhosPossiveis)
+                {
+                    int idOrigem = caminho.Desempilhar();
+                    Retornar(idOrigem, idCidadeDestino);
+                }
 
-                //MessageBox.Show(s);
+                for (int i = 0; i < caminhosPossiveis.Count; i++)
+                {
+                    string s = "";
+                    PilhaLista<int> caminhoAtual = caminhosPossiveis[i].Clone();
+
+                    while (!caminhoAtual.EstaVazia())
+                        s += caminhoAtual.Desempilhar().ToString() + " ";
+
+                    //MessageBox.Show(s);
+                }
+                ExibirCaminhos();
             }
-            ExibirCaminhos();
 
         }
 
         private void BuscarCaminhos(int idOrigem, int idDestino, int indiceInicial)
         {
-            if(idOrigem == idDestino)
+            if (idOrigem == idDestino)
             {
                 caminho.Empilhar(idDestino);
                 caminhosPossiveis.Add(caminho.Clone());
             }
-            else 
+            else
             {
                 int c = -1;
                 for (int i = indiceInicial; i < adjacencias.GetLength(0); i++)
@@ -106,7 +114,7 @@ namespace apCaminhosMarte
             cidadesPercorridas[idOrigem] = false;
             BuscarCaminhos(c, idDestino, idOrigem + 1);
         }
-        
+
         //private void AcharOutroCaminhoPossivel()
         //{
         //    int c = caminho.Desempilhar();
@@ -114,7 +122,7 @@ namespace apCaminhosMarte
 
         private void Form1_Load(object sender, EventArgs e)
         {
-               lsbOrigem.Items.Clear();
+            lsbOrigem.Items.Clear();
             lsbDestino.Items.Clear();
             caminho = new PilhaLista<int>();
             cidades = new Arvore<Cidade>();
@@ -136,9 +144,9 @@ namespace apCaminhosMarte
             }
             arq.Close();
 
-            adjacencias = new int[cidades.QuantosDados,cidades.QuantosDados];
+            adjacencias = new int[cidades.QuantosDados, cidades.QuantosDados];
             arq = new StreamReader("CaminhosEntreCidadesMarte.txt");
-            while(!arq.EndOfStream)
+            while (!arq.EndOfStream)
             {
                 CaminhoEntreCidades caminho = CaminhoEntreCidades.LerArquivo(arq);
                 adjacencias[caminho.IdCidadeOrigem, caminho.IdCidadeDestino] = caminho.Distancia;
@@ -158,7 +166,7 @@ namespace apCaminhosMarte
                 DesenharCidade(c.Dir, gr);
                 int x = (c.Info.CoordenadaX * pbMapa.Width) / 4096;
                 int y = (c.Info.CoordenadaY * pbMapa.Height) / 2048;
-                gr.FillEllipse(caneta,x,y,6,6);
+                gr.FillEllipse(caneta, x, y, 6, 6);
                 gr.DrawString(c.Info.NomeCidade, new Font("Bauhaus 93", 11),
                               new SolidBrush(Color.Black), x - 20, y - 15);
             }
@@ -219,7 +227,7 @@ namespace apCaminhosMarte
             while (!caminho.EstaVazia())
             {
                 int idCidade = caminho.Desempilhar();
-                cidades.Existe(new Cidade(idCidade, " ",0,0));
+                cidades.Existe(new Cidade(idCidade, " ", 0, 0));
                 Cidade cidade = cidades.Atual.Info;
 
                 int x1 = (cidadeAnterior.CoordenadaX * pbMapa.Width) / 4096;
@@ -237,7 +245,7 @@ namespace apCaminhosMarte
         private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             pbMapa.Invalidate();
-            
+
         }
 
         private void ExibirCaminhos()
@@ -246,7 +254,7 @@ namespace apCaminhosMarte
             int coluna;
             dataGridView1.RowCount = cidades.QuantosDados;
             dataGridView1.ColumnCount = 0;
-            foreach(var caminho in caminhosPossiveis)
+            foreach (var caminho in caminhosPossiveis)
             {
                 if (caminho.Tamanho() > dataGridView1.ColumnCount)
                     dataGridView1.ColumnCount = caminho.Tamanho();
@@ -258,7 +266,7 @@ namespace apCaminhosMarte
                 while (!aux.EstaVazia())
                     aux2.Empilhar(aux.Desempilhar());
 
-                while(!aux2.EstaVazia())
+                while (!aux2.EstaVazia())
                 {
                     cidades.Existe(new Cidade(aux2.Desempilhar(), "", 0, 0));
                     dataGridView1.Columns[coluna].HeaderText = "Cidade";
