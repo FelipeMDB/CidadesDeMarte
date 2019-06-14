@@ -123,6 +123,7 @@
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.Size = new System.Drawing.Size(277, 71);
             this.dataGridView2.TabIndex = 10;
+            this.dataGridView2.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellEnter);
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -182,11 +183,13 @@
             this.Column5,
             this.Column6});
             this.dataGridView1.Location = new System.Drawing.Point(1041, 238);
+            this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.Size = new System.Drawing.Size(277, 181);
             this.dataGridView1.TabIndex = 9;
+            this.dataGridView1.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEnter);
             // 
             // Column1
             // 

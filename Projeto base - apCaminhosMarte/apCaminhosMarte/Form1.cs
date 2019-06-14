@@ -67,6 +67,8 @@ namespace apCaminhosMarte
                     //MessageBox.Show(s);
                 }
                 ExibirCaminhos();
+                caminhoASerMostrado = SelecionarMelhorCaminho();
+                pbMapa.Invalidate();
             }
 
         }
@@ -204,7 +206,7 @@ namespace apCaminhosMarte
         {
             Graphics gr = e.Graphics;
             DesenharCidade(cidades.Raiz, gr);
-            if (caminhoASerMostrado != null)
+            if (caminhoASerMostrado != null && !caminhoASerMostrado.EstaVazia())
                 DesenharCaminho(caminhoASerMostrado, e.Graphics);
 
         }
@@ -218,7 +220,8 @@ namespace apCaminhosMarte
 
         private void DesenharCaminho(PilhaLista<int> caminho, Graphics g)
         {
-            Pen caneta = new Pen(Color.Red);
+            Pen caneta = new Pen(Color.Black);
+            caneta.Width = 2.0F;
 
             int idCidadeAnterior = caminho.Desempilhar();
             cidades.Existe(new Cidade(idCidadeAnterior, " ", 0, 0));
@@ -244,8 +247,8 @@ namespace apCaminhosMarte
 
         private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            pbMapa.Invalidate();
-
+          //  caminhoASerMostrado = caminhosPossiveis[int.Parse(e.RowIndex.ToString())];
+           // pbMapa.Invalidate();
         }
 
         private void ExibirCaminhos()
@@ -275,6 +278,68 @@ namespace apCaminhosMarte
                 }
                 linha++;
             }
+
+
+
+            PilhaLista<int> melhorCaminho = SelecionarMelhorCaminho();
+            var auxiliar = new PilhaLista<int>();
+            
+            dataGridView2.RowCount = 1;
+            dataGridView2.ColumnCount = melhorCaminho.Tamanho(); 
+
+            while (!melhorCaminho.EstaVazia())
+                auxiliar.Empilhar(melhorCaminho.Desempilhar());
+
+            coluna = 0;
+            while(!auxiliar.EstaVazia())
+            {
+                cidades.Existe(new Cidade(auxiliar.Desempilhar(), "", 0, 0));
+                dataGridView2.Columns[coluna].HeaderText = "Cidade";
+                dataGridView2.Rows[0].Cells[coluna].Value = cidades.Atual.Info.NomeCidade;
+                coluna++;
+            }
+
+                
+        }
+
+        private PilhaLista<int> SelecionarMelhorCaminho()   //retorna um inteiro o qual é o índice do melhor caminho guardado para a cidade desejada
+        {
+            PilhaLista<int> melhorCaminho = new PilhaLista<int>();
+            int distanciaTotal = 0;
+            int menorDistancia = int.MaxValue;
+            foreach (var caminho in caminhosPossiveis)
+            {
+                distanciaTotal = 0;
+                var aux = caminho.Clone();
+                int anterior = aux.Desempilhar();
+
+                while (!aux.EstaVazia())
+                { 
+                    int cidade = aux.Desempilhar();
+                    distanciaTotal += adjacencias[anterior, cidade];
+                    anterior = cidade;
+                }
+
+                if(menorDistancia > distanciaTotal)
+                {
+                    menorDistancia = distanciaTotal;
+                    melhorCaminho = caminho.Clone();
+                }
+            }
+
+            return melhorCaminho;
+        }
+
+        private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            caminhoASerMostrado = caminhosPossiveis[int.Parse(e.RowIndex.ToString())].Clone();
+            pbMapa.Invalidate();
+        }
+
+        private void dataGridView2_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            caminhoASerMostrado = SelecionarMelhorCaminho();
+            pbMapa.Invalidate();
         }
     }
 }
