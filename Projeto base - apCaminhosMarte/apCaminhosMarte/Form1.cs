@@ -57,7 +57,7 @@ namespace apCaminhosMarte
                 while(!caminhoAtual.EstaVazia())
                     s+=caminhoAtual.Desempilhar().ToString()+" ";
 
-                MessageBox.Show(s);
+                //MessageBox.Show(s);
             }
             ExibirCaminhos();
 
@@ -244,13 +244,25 @@ namespace apCaminhosMarte
         {
             int linha = 0;
             int coluna;
+            dataGridView1.RowCount = cidades.QuantosDados;
+            dataGridView1.ColumnCount = 0;
             foreach(var caminho in caminhosPossiveis)
             {
+                if (caminho.Tamanho() > dataGridView1.ColumnCount)
+                    dataGridView1.ColumnCount = caminho.Tamanho();
+
                 coluna = 0;
                 var aux = caminho.Clone();
-                while(!aux.EstaVazia())
+
+                PilhaLista<int> aux2 = new PilhaLista<int>();
+                while (!aux.EstaVazia())
+                    aux2.Empilhar(aux.Desempilhar());
+
+                while(!aux2.EstaVazia())
                 {
-                    dataGridView1.Rows[linha].Cells[coluna].Value = aux.Desempilhar();
+                    cidades.Existe(new Cidade(aux2.Desempilhar(), "", 0, 0));
+                    dataGridView1.Columns[coluna].HeaderText = "Cidade";
+                    dataGridView1.Rows[linha].Cells[coluna].Value = cidades.Atual.Info.NomeCidade;
                     coluna++;
                 }
                 linha++;
