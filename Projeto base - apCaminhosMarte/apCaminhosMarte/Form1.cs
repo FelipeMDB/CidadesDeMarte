@@ -26,14 +26,8 @@ namespace apCaminhosMarte
             InitializeComponent();
         }
 
-        private void TxtCaminhos_DoubleClick(object sender, EventArgs e)
-        {
-
-        }
-
         private void BtnBuscar_Click(object sender, EventArgs e)
         {
-
             MessageBox.Show("Buscar caminhos entre cidades selecionadas");
             int idCidadeOrigem = Int32.Parse(lsbOrigem.SelectedIndex.ToString().Split('-')[0]);
             int idCidadeDestino = Int32.Parse(lsbDestino.SelectedIndex.ToString().Split('-')[0]);
@@ -56,16 +50,6 @@ namespace apCaminhosMarte
                     Retornar(idOrigem, idCidadeDestino);
                 }
 
-                for (int i = 0; i < caminhosPossiveis.Count; i++)
-                {
-                    string s = "";
-                    PilhaLista<int> caminhoAtual = caminhosPossiveis[i].Clone();
-
-                    while (!caminhoAtual.EstaVazia())
-                        s += caminhoAtual.Desempilhar().ToString() + " ";
-
-                    //MessageBox.Show(s);
-                }
                 ExibirCaminhos();
                 caminhoASerMostrado = SelecionarMelhorCaminho();
                 pbMapa.Invalidate();
@@ -116,11 +100,6 @@ namespace apCaminhosMarte
             cidadesPercorridas[idOrigem] = false;
             BuscarCaminhos(c, idDestino, idOrigem + 1);
         }
-
-        //private void AcharOutroCaminhoPossivel()
-        //{
-        //    int c = caminho.Desempilhar();
-        //}
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -197,7 +176,7 @@ namespace apCaminhosMarte
                 // sleep(100);
                 SolidBrush preenchimento = new SolidBrush(Color.Cyan);
                 g.FillEllipse(preenchimento, xf - 15, yf - 15, 30, 30);
-                g.DrawString(raiz.Info.NomeCidade, new Font("Comic Sans", 12),
+                g.DrawString(raiz.Info.IdCidade + "-" + raiz.Info.NomeCidade, new Font("Comic Sans", 12),
                               new SolidBrush(Color.Blue), xf - 15, yf - 10);
             }
         }
