@@ -14,11 +14,11 @@ namespace apCaminhosMarte
     public partial class Form1 : Form
     {
         Arvore<Cidade> cidades;
-        List<PilhaLista<int>> caminhosPossiveis;
         int[,] adjacencias;
         PilhaLista<int> caminho;
         bool[] cidadesPercorridas;
         bool percorreuTodosOsCaminhosPossiveis;
+        List<PilhaLista<int>> caminhosPossiveis;
         PilhaLista<int> caminhoASerMostrado;
 
         public Form1()
@@ -37,21 +37,21 @@ namespace apCaminhosMarte
             int idCidadeOrigem = Int32.Parse(lsbOrigem.SelectedIndex.ToString().Split('-')[0]);
             int idCidadeDestino = Int32.Parse(lsbDestino.SelectedIndex.ToString().Split('-')[0]);
 
-            cidadesPercorridas = new bool[23];
+            cidadesPercorridas = new bool[cidades.QuantosDados];
             caminhosPossiveis = new List<PilhaLista<int>>();
+            caminho = new PilhaLista<int>();
+            percorreuTodosOsCaminhosPossiveis = false;
 
             BuscarCaminhos(idCidadeOrigem, idCidadeDestino, 0);
             while (!percorreuTodosOsCaminhosPossiveis)
             {
-                //AcharOutroCaminhoPossivel();
-                cidadesPercorridas = new bool[23];
                 int idOrigem = caminho.Desempilhar();
                 Retornar(idOrigem, idCidadeDestino);
             }
 
-            string s="";
             for(int i=0; i < caminhosPossiveis.Count;i++)
             {
+                string s = "";
                 PilhaLista<int> caminhoAtual = caminhosPossiveis[i].Clone();
 
                 while(!caminhoAtual.EstaVazia())
@@ -103,6 +103,7 @@ namespace apCaminhosMarte
         private void Retornar(int idOrigem, int idDestino)
         {
             int c = caminho.Desempilhar();
+            cidadesPercorridas[idOrigem] = false;
             BuscarCaminhos(c, idDestino, idOrigem + 1);
         }
         
