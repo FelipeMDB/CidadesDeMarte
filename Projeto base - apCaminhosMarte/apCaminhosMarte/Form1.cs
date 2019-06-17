@@ -60,7 +60,7 @@ namespace apCaminhosMarte
                 }
             }
         }
-
+        
         private void BuscarCaminhos(int idOrigem, int idDestino, int indiceInicial)
         {
             if (idOrigem == idDestino)
@@ -206,8 +206,8 @@ namespace apCaminhosMarte
         {
             Graphics gr = e.Graphics;
             DesenharCidade(cidades.Raiz, gr);
-            if (caminhoASerMostrado != null && !caminhoASerMostrado.EstaVazia())
-                DesenharCaminho(caminhoASerMostrado, e.Graphics);
+            if (caminhoASerMostrado != null)
+                DesenharCaminho(caminhoASerMostrado.Clone(), e.Graphics);
 
         }
 
