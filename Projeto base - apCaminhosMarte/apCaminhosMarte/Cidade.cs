@@ -27,6 +27,8 @@ namespace apCaminhosMarte
         public int CoordenadaX { get => coordenadaX; set => coordenadaX = value; }
         public int CoordenadaY { get => coordenadaY; set => coordenadaY = value; }
 
+        //construtor da classe
+        //parâmetros: id da cidade, nome da cidade, coordenada x, coordenada y
         public Cidade(int id, string nome, int x, int y)
         {
             idCidade = id;
