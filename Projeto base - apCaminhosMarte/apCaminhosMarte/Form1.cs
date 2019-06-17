@@ -28,33 +28,37 @@ namespace apCaminhosMarte
 
         private void BtnBuscar_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Buscar caminhos entre cidades selecionadas");
-            int idCidadeOrigem = Int32.Parse(lsbOrigem.SelectedIndex.ToString().Split('-')[0]);
-            int idCidadeDestino = Int32.Parse(lsbDestino.SelectedIndex.ToString().Split('-')[0]);
-
-            if (idCidadeOrigem == idCidadeDestino)
+            if (lsbOrigem.SelectedItem != null && lsbDestino.SelectedItem != null)
             {
-                MessageBox.Show("Seu ponto de partida é o mesmo que o seu destino!");
-            }
-            else
-            {
-                cidadesPercorridas = new bool[cidades.QuantosDados];
-                caminhosPossiveis = new List<PilhaLista<int>>();
-                caminho = new PilhaLista<int>();
-                percorreuTodosOsCaminhosPossiveis = false;
+                MessageBox.Show("Buscar caminhos entre cidades selecionadas");
 
-                BuscarCaminhos(idCidadeOrigem, idCidadeDestino, 0);
-                while (!percorreuTodosOsCaminhosPossiveis)
+                int idCidadeOrigem = Int32.Parse(lsbOrigem.SelectedIndex.ToString().Split('-')[0]);
+                int idCidadeDestino = Int32.Parse(lsbDestino.SelectedIndex.ToString().Split('-')[0]);
+
+                if (idCidadeOrigem == idCidadeDestino)
                 {
-                    int idOrigem = caminho.Desempilhar();
-                    Retornar(idOrigem, idCidadeDestino);
+                    MessageBox.Show("Seu ponto de partida é o mesmo que o seu destino!");
                 }
+                else
+                {
+                    cidadesPercorridas = new bool[cidades.QuantosDados];
+                    caminhosPossiveis = new List<PilhaLista<int>>();
+                    caminho = new PilhaLista<int>();
+                    percorreuTodosOsCaminhosPossiveis = false;
 
-                ExibirCaminhos();
-                caminhoASerMostrado = SelecionarMelhorCaminho();
-                pbMapa.Invalidate();
+                    BuscarCaminhos(idCidadeOrigem, idCidadeDestino, 0);
+                    while (!percorreuTodosOsCaminhosPossiveis)
+                    {
+                        int idOrigem = caminho.Desempilhar();
+                        Retornar(idOrigem, idCidadeDestino);
+                    }
+
+                    OrdenarCaminhos();
+                    ExibirCaminhos();
+                    caminhoASerMostrado = SelecionarMelhorCaminho();
+                    pbMapa.Invalidate();
+                }
             }
-
         }
 
         private void BuscarCaminhos(int idOrigem, int idDestino, int indiceInicial)
@@ -354,7 +358,6 @@ namespace apCaminhosMarte
                     melhorCaminho = caminho.Clone();
                 }
             }
-
             return melhorCaminho;
         }
 
@@ -369,9 +372,67 @@ namespace apCaminhosMarte
 
         private void dataGridView2_CellEnter(object sender, DataGridViewCellEventArgs e)  //quando uma célula específica do dgv receber foco de entrada
         { 
-            //este dataGridView mostra epnas o melhor caminho
+            //este dataGridView mostra apenas o melhor caminho
             caminhoASerMostrado = SelecionarMelhorCaminho();  //portanto o caminho a ser mostrado recebe a função que acha o melhor caminho
             pbMapa.Invalidate();                            //permite com que o pbMapa seja redesenhado, chamando o evento paint
         }
+
+        private void OrdenarCaminhos()
+        {
+            int quantosCaminhosForam = 0;
+            while(quantosCaminhosForam < caminhosPossiveis.Count)
+            {
+                int menorCaminho = int.MaxValue;
+                int indiceMelhorCaminho = 0;
+                for(int i=quantosCaminhosForam; i<caminhosPossiveis.Count; i++)
+                {
+                    PilhaLista<int> aux = caminhosPossiveis[i].Clone();
+                    int caminho = 0;
+                    int anterior = aux.Desempilhar();
+                    while (!aux.EstaVazia())
+                    {
+                        int cidade = aux.Desempilhar();
+                        caminho += adjacencias[anterior, cidade];
+                        anterior = cidade;
+                    }
+                    if (menorCaminho > caminho)
+                    {
+                        indiceMelhorCaminho = i;
+                        menorCaminho = caminho;
+                    }
+                }
+
+                PilhaLista<int> melhor = caminhosPossiveis[indiceMelhorCaminho].Clone();
+                caminhosPossiveis.RemoveAt(indiceMelhorCaminho);
+                caminhosPossiveis.Insert(quantosCaminhosForam, melhor);
+                quantosCaminhosForam++;
+            }
+
+        }
+
+        //private void OrdenarCaminhos2()
+        //{
+        //    int[] distancias = new int[caminhosPossiveis.Count];
+        //    int quantosCaminhosForam = 0;
+        //    while (quantosCaminhosForam < caminhosPossiveis.Count)
+        //    {
+        //        int menorCaminho = int.MaxValue;
+        //        for (int i = quantosCaminhosForam; i < caminhosPossiveis.Count; i++)
+        //        {
+        //            PilhaLista<int> aux = caminhosPossiveis[i];
+        //            int caminho = 0;
+        //            int anterior = aux.Desempilhar();
+        //            while (!aux.EstaVazia())
+        //            {
+        //                int cidade = aux.Desempilhar();
+        //                caminho += adjacencias[anterior, cidade];
+        //                cidade = anterior;
+        //            }
+        //            distancias[] = caminho;
+        //            quantosCaminhosForam++;
+        //        }
+        //    }
+
+        //}
     }
 }
