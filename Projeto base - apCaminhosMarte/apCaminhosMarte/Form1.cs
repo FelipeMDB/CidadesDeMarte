@@ -133,7 +133,12 @@ namespace apCaminhosMarte
 
             //criamos uma matriz de cidades de acordo com a quantidade de cidades existentes 
             adjacencias = new int[cidades.QuantosDados, cidades.QuantosDados];
+            //lemos o arquivo que nos passa os caminhos entre as cidades
             arq = new StreamReader("CaminhosEntreCidadesMarte.txt");
+
+            //cria-se uma variável que recebe o caminho entre as cidades
+            //guarda-se a distância do caminho na matriz de acordo com a cidade de origem e cidade de destino
+            //[idOrigem, idDestino] == [x,y]
             while (!arq.EndOfStream)
             {
                 CaminhoEntreCidades caminho = CaminhoEntreCidades.LerArquivo(arq);
@@ -142,6 +147,7 @@ namespace apCaminhosMarte
             }
             arq.Close();
 
+            //pedimos para que o mapa seja redesenhado
             pbMapa.Invalidate();
         }
 
