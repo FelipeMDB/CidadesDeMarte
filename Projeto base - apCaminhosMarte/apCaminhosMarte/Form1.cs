@@ -13,13 +13,13 @@ namespace apCaminhosMarte
 {
     public partial class Form1 : Form
     {
-        Arvore<Cidade> cidades;
-        int[,] adjacencias;
-        PilhaLista<int> caminho;
-        bool[] cidadesPercorridas;
+        Arvore<Cidade> cidades;                   //arvore com todas as cidades de Marte
+        int[,] adjacencias;                       //matriz qque armazena as conexões(caminhos) entre cidades, possuindo em determinado campo [x,y] a quilometragem necessária a se percorrer
+        PilhaLista<int> caminho;                  //pilha que guarda as ids de cidades que formam em sequência um caminho
+        bool[] cidadesPercorridas;                //vetor booleano, no qual o index representa a id de uma cidade, portanto ao acessar determinado index saberemos se esta cidade já foi percorrida
         bool percorreuTodosOsCaminhosPossiveis;
-        List<PilhaLista<int>> caminhosPossiveis;
-        PilhaLista<int> caminhoASerMostrado;
+        List<PilhaLista<int>> caminhosPossiveis; //lista qque armazena todos os caminhosPossiveis
+        PilhaLista<int> caminhoASerMostrado;    //variável que guarda o caminhoASerMostrado, no caso o caminho que se quer ser desenhado
 
         public Form1()
         {
