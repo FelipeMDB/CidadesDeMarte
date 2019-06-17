@@ -55,7 +55,7 @@ namespace apCaminhosMarte
 
                     OrdenarCaminhos();
                     ExibirCaminhos();
-                    caminhoASerMostrado = SelecionarMelhorCaminho();
+                    caminhoASerMostrado = caminhosPossiveis[0].Clone();
                     pbMapa.Invalidate();
                 }
             }
@@ -300,7 +300,7 @@ namespace apCaminhosMarte
 
 
             //encontramos o melhorCaminho
-            PilhaLista<int> melhorCaminho = SelecionarMelhorCaminho();
+            PilhaLista<int> melhorCaminho = caminhosPossiveis[0].Clone();
             var auxiliar = new PilhaLista<int>();
             
             //instanciamos as linhas e colunas do dgv
@@ -326,7 +326,7 @@ namespace apCaminhosMarte
                 
         }
 
-        private PilhaLista<int> SelecionarMelhorCaminho()   //retorna um inteiro o qual é o índice do melhor caminho guardado para a cidade desejada
+        /*private PilhaLista<int> SelecionarMelhorCaminho()   //retorna um inteiro o qual é o índice do melhor caminho guardado para a cidade desejada
         {
             
             PilhaLista<int> melhorCaminho = new PilhaLista<int>();//criamos uma nova pilha a qual será retornada no final do método contendo o melhor caminho possível
@@ -359,7 +359,7 @@ namespace apCaminhosMarte
                 }
             }
             return melhorCaminho;
-        }
+        } */
 
         private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e) //quando uma célula específica do dgv receber foco de entrada
         {
@@ -373,7 +373,7 @@ namespace apCaminhosMarte
         private void dataGridView2_CellEnter(object sender, DataGridViewCellEventArgs e)  //quando uma célula específica do dgv receber foco de entrada
         { 
             //este dataGridView mostra apenas o melhor caminho
-            caminhoASerMostrado = SelecionarMelhorCaminho();  //portanto o caminho a ser mostrado recebe a função que acha o melhor caminho
+            caminhoASerMostrado = caminhosPossiveis[0].Clone();  //portanto o caminho a ser mostrado recebe a função que acha o melhor caminho
             pbMapa.Invalidate();                            //permite com que o pbMapa seja redesenhado, chamando o evento paint
         }
 
