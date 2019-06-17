@@ -151,6 +151,7 @@ namespace apCaminhosMarte
             pbMapa.Invalidate();
         }
 
+        //desenha uma cidade no mapa
         private void DesenharCidade(NoArvore<Cidade> c, Graphics gr)
         {
             if (c != null)
