@@ -9,6 +9,8 @@ namespace apCaminhosMarte
 {
     class Cidade : IComparable<Cidade>
     {
+
+        //declaração das variáveis que serão utilizadas para leitura de arquivo
         int idCidade;
         const int tamanhoIdCidade = 3;
         const int inicioIdCidade = 0;
@@ -22,6 +24,8 @@ namespace apCaminhosMarte
         const int tamanhoCoordenadaY = 5;
         const int inicioCoordenadaY = inicioCoordenadaX + tamanhoCoordenadaX;
 
+
+        //declaração das variáveis globais da classe 
         public int IdCidade { get => idCidade; set => idCidade = value; }
         public string NomeCidade { get => nomeCidade; set => nomeCidade = value; }
         public int CoordenadaX { get => coordenadaX; set => coordenadaX = value; }
@@ -37,6 +41,7 @@ namespace apCaminhosMarte
             coordenadaY = y;
         }
 
+        //lê os arquivos  e os separa nas respectivas variáveis da classe retornando uma cidade
         public static Cidade LerArquivo(StreamReader arq)
         {
             string linha = arq.ReadLine();
@@ -47,8 +52,10 @@ namespace apCaminhosMarte
             return new Cidade(idCidade, nomeCidade, coordenadaX, coordenadaY);
         }
 
+        //método compareTo requisitado pela interface
         public int CompareTo(Cidade other)
         {
+            //compara os ids das cidades
             return this.idCidade - other.idCidade;
         }
     }

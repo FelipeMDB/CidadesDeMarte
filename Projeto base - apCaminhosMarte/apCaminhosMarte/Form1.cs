@@ -30,8 +30,6 @@ namespace apCaminhosMarte
         {
             if (lsbOrigem.SelectedItem != null && lsbDestino.SelectedItem != null)
             {
-                MessageBox.Show("Buscar caminhos entre cidades selecionadas");
-
                 int idCidadeOrigem = Int32.Parse(lsbOrigem.SelectedIndex.ToString().Split('-')[0]);
                 int idCidadeDestino = Int32.Parse(lsbDestino.SelectedIndex.ToString().Split('-')[0]);
 
