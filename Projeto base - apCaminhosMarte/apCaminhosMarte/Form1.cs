@@ -280,22 +280,26 @@ namespace apCaminhosMarte
 
                 //refazemos as proporções do mapa de acordo com as coordenadas da cidade
                 int x1 = (cidadeAnterior.CoordenadaX * pbMapa.Width) / 4096;
-                int y1 = (cidadeAnterior.CoordenadaY * pbMapa.Height) / 2048;
+                int y1 = (cidadeAnterior.CoordenadaY * pbMapa.Height) / 2048 + 3;
 
                 //refazemos as proporções do mapa de acordo com as coordenadas da cidade
                 int x2 = (cidade.CoordenadaX * pbMapa.Width) / 4096;
-                int y2 = (cidade.CoordenadaY * pbMapa.Height) / 2048;
+                int y2 = (cidade.CoordenadaY * pbMapa.Height) / 2048 + 3;
 
-                if(x1-x2 > 0 && x1-x2 > (pbMapa.Width-x1)+x2)
+                // caso a distância entre x1 e x2 seja maior que a distância "por trás", 
+                // deve -se desenhar as retas entre as cidades passando por trás 
+                // (por exemplo Gondor e Arrakeen
+                if(x1-x2 > (pbMapa.Width-x1)+x2)
                 {
                     g.DrawLine(caneta, x1, y1, pbMapa.Width, (y1 + y2) / 2);
                     g.DrawLine(caneta, x2, y2, 0, (y1 + y2) / 2);
                 }
-                else if(x2 - x1 > 0 && x2 - x1 > (pbMapa.Width - x2) + x1)
+                else if(x2 - x1 > (pbMapa.Width - x2) + x1)
                 {
                     g.DrawLine(caneta, x1, y1, 0, (y1 + y2) / 2);
                     g.DrawLine(caneta, x2, y2, pbMapa.Width, (y1 + y2) / 2);
                 }
+                //se não for o caso da linha ter de passar por trás
                 else
                 {
                     //desenhamos uma linha entre as duas cidades, cidadeAnterior representando a posição atual, e cidade representando aonde é necessário ir 
