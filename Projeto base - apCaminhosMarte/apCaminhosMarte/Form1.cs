@@ -209,8 +209,6 @@ namespace apCaminhosMarte
                 gr.DrawString(c.Info.NomeCidade, new Font("Bauhaus 93", 11),
                               new SolidBrush(Color.Black), x - 20, y - 15);
             }
-
-
         }
 
         //método para desenhar a árvore de cidades com base no método fornecido a nós pelo professor
