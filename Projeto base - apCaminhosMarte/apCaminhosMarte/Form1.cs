@@ -29,7 +29,7 @@ namespace apCaminhosMarte
         
         private void BtnBuscar_Click(object sender, EventArgs e)
         {
-            //verificamos se duas cidades foram selecionadas
+            //verificamos se duas cidades foram selecionadas, caso contrário avisamos o usuário
             if (lsbOrigem.SelectedItem != null && lsbDestino.SelectedItem != null) 
             {
                 //pegamos o índice das cidades de origem e destino disponíveis nos lsbs
@@ -51,17 +51,22 @@ namespace apCaminhosMarte
 
                     //chamamos o método buscarCaminhos com base no destino desejado e na cidade de origem
                     BuscarCaminhos(idCidadeOrigem, idCidadeDestino, 0);
+
                     //enquanto houver caminhos a serem percorridos, voltamos uma posição(uma cidade) e chamamos o método Retornar
-                    //este método
+                    //este método chamará novamente BuscarCaminhos, desempilhando uma cidade
+                    //ou seja, voltando uma posição para verificar a existência de outros caminhos para o mesmo local
                     while (!percorreuTodosOsCaminhosPossiveis)
                     {
                         int idOrigem = caminho.Desempilhar();
                         Retornar(idOrigem, idCidadeDestino);
                     }
-
+                    //ordenamos os caminhos encontrados do melhor para o pior 
                     OrdenarCaminhos();
+                    //exibimos os caminhos no gridView
                     ExibirCaminhos();
+                    //o caminho a ser mostrado(desenhado) por padrão será o do index 0 do dgv, pois de acordo com a ordenação, este trata-se do melhor caminho
                     caminhoASerMostrado = caminhosPossiveis[0].Clone();
+                    //permitimos que o mapa seja redesenhado
                     pbMapa.Invalidate();
                 }
             }
@@ -71,6 +76,7 @@ namespace apCaminhosMarte
             }
         }
         
+        //método que busca todos os caminhos possíveis para um determinado destino
         private void BuscarCaminhos(int idOrigem, int idDestino, int indiceInicial)
         {
             if (idOrigem == idDestino)
@@ -78,8 +84,10 @@ namespace apCaminhosMarte
                 caminho.Empilhar(idDestino);
                 caminhosPossiveis.Add(caminho.Clone());
             }
+            //caso a origem seja diferente do destino
             else
             {
+                //variável que será utilizada para a realização de verificações, recebendo os índices das cidades
                 int c = -1;
                 for (int i = indiceInicial; i < adjacencias.GetLength(0); i++)
                 {
@@ -169,7 +177,7 @@ namespace apCaminhosMarte
             pbMapa.Invalidate();
         }
 
-        //desenha uma cidade no mapa
+        //desenha uma cidade no mapa de acordo com a cidade passada como parâmetro
         private void DesenharCidade(NoArvore<Cidade> c, Graphics gr)
         {
             if (c != null)
@@ -177,9 +185,14 @@ namespace apCaminhosMarte
                 SolidBrush caneta = new SolidBrush(Color.Black);
                 DesenharCidade(c.Esq, gr);
                 DesenharCidade(c.Dir, gr);
+
+                //conversão das coordenadas da cidade de acordo com o tamnho do mapa
                 int x = (c.Info.CoordenadaX * pbMapa.Width) / 4096;
                 int y = (c.Info.CoordenadaY * pbMapa.Height) / 2048;
+
+                //desenha-se um ponto preto representando a localização da cidade
                 gr.FillEllipse(caneta, x, y, 6, 6);
+                //escreve no mapa nos seus respectivos locais o nome da cidade
                 gr.DrawString(c.Info.NomeCidade, new Font("Bauhaus 93", 11),
                               new SolidBrush(Color.Black), x - 20, y - 15);
             }
