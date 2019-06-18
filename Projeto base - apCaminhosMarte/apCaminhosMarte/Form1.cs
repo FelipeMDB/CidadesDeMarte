@@ -17,20 +17,20 @@ namespace apCaminhosMarte
         int[,] adjacencias;                       //matriz qque armazena as conexões(caminhos) entre cidades, possuindo em determinado campo [x,y] a quilometragem necessária a se percorrer
         PilhaLista<int> caminho;                  //pilha que guarda as ids de cidades que formam em sequência um caminho
         bool[] cidadesPercorridas;                //vetor booleano, no qual o index representa a id de uma cidade, portanto ao acessar determinado index saberemos se esta cidade já foi percorrida
-        bool percorreuTodosOsCaminhosPossiveis;
-        List<PilhaLista<int>> caminhosPossiveis; //lista qque armazena todos os caminhosPossiveis
-        PilhaLista<int> caminhoASerMostrado;    //variável que guarda o caminhoASerMostrado, no caso o caminho que se quer ser desenhado
+        bool percorreuTodosOsCaminhosPossiveis;   //informa se todos os caminhos existentes foram percorridos
+        List<PilhaLista<int>> caminhosPossiveis;  //lista que armazena todos os caminhosPossiveis
+        PilhaLista<int> caminhoASerMostrado;      //variável que guarda o caminhoASerMostrado, no caso o caminho que se quer ser desenhado
 
         public Form1()
         {
             InitializeComponent();
         }
 
-        
+
         private void BtnBuscar_Click(object sender, EventArgs e)
         {
             //verificamos se duas cidades foram selecionadas, caso contrário avisamos o usuário
-            if (lsbOrigem.SelectedItem != null && lsbDestino.SelectedItem != null) 
+            if (lsbOrigem.SelectedItem != null && lsbDestino.SelectedItem != null)
             {
                 //pegamos o índice das cidades de origem e destino disponíveis nos lsbs
                 int idCidadeOrigem = Int32.Parse(lsbOrigem.SelectedIndex.ToString().Split('-')[0]);
@@ -75,10 +75,13 @@ namespace apCaminhosMarte
                 MessageBox.Show("Por favor selecione uma origem e um destino");
             }
         }
-        
+
         //método que busca todos os caminhos possíveis para um determinado destino
-        private void BuscarCaminhos(int idOrigem, int idDestino, int indiceInicial)
+        private void BuscarCaminhos(int idOrigem, int idDestino, int indiceInicial)  //parâmetros: id cidade origem, id cidade destino, índice inicial para percorrer na matriz de adjacências 
         {
+            //se a origem for igual ao destino, por se tratar de um método recursivo com a origem mudando de acordo com as cidades percorridas
+            //empilhamos o id da cidade destino na pilha
+            //adicionamos o caminho na lista de caminhos possíveis, clonando-o já que o reutilizamos para achar outros caminhos 
             if (idOrigem == idDestino)
             {
                 caminho.Empilhar(idDestino);
@@ -89,28 +92,36 @@ namespace apCaminhosMarte
             {
                 //variável que será utilizada para a realização de verificações, recebendo os índices das cidades
                 int c = -1;
+
+                //até achar uma adjacência (conexão entre cidades) ou acabar as cidades da linha da matriz
                 for (int i = indiceInicial; i < adjacencias.GetLength(0); i++)
                 {
+                    //se há uma conexão e esta cidade não foi percorrida anteriormente neste mesmo caminho encontrado
                     if (adjacencias[idOrigem, i] != 0 && cidadesPercorridas[i] == false)
                     {
-                        if (caminho.EstaVazia() || i != caminho.OTopo())
-                        {
-                            c = i;
-                            break;
-                        }
+                        //"c" recebe o id da cidade a ser percorrida
+                        c = i;
+                        break;
                     }
                 }
+                //não é possível chegar ao destino no caminho encontrado ou todas as possibilidades de caminho por esta cidade já foram encontradas
                 if (c == -1)
                 {
+                    //ele voltou para a cidade origem, portanto já encontrou todos os caminhos
                     if (caminho.EstaVazia())
                         percorreuTodosOsCaminhosPossiveis = true;
+
+                    //se ainda existem opções, volta uma posição(uma cidade) para procurar outra possibilidade
                     else
                         Retornar(idOrigem, idDestino);
                 }
                 else
                 {
+                    //definimos que a cidade foi percorrida
                     cidadesPercorridas[idOrigem] = true;
+                    //empilhamos o id desta cidade
                     caminho.Empilhar(idOrigem);
+                    //buscamos um novo caminho a partir desta cidade
                     BuscarCaminhos(c, idDestino, 0);
                 }
             }
@@ -201,7 +212,7 @@ namespace apCaminhosMarte
         }
 
         //método para desenhar a árvore de cidades com base no método fornecido a nós pelo professor
-        private void DesenharArvore(bool primeiraVez, NoArvore<Cidade> raiz,     
+        private void DesenharArvore(bool primeiraVez, NoArvore<Cidade> raiz,
                            int x, int y, double angulo, double incremento,
                            double comprimento, Graphics g)
         {
@@ -214,12 +225,12 @@ namespace apCaminhosMarte
                 if (primeiraVez)
                     yf = 25;
                 g.DrawLine(caneta, x, y, xf, yf);
-                
+
                 DesenharArvore(false, raiz.Esq, xf, yf, Math.PI / 2 + incremento,
                                                  incremento * 0.60, comprimento * 0.8, g);
                 DesenharArvore(false, raiz.Dir, xf, yf, Math.PI / 2 - incremento,
                                                   incremento * 0.60, comprimento * 0.8, g);
-                
+
                 SolidBrush preenchimento = new SolidBrush(Color.Cyan);
                 g.FillEllipse(preenchimento, xf - 15, yf - 15, 30, 30);
                 g.DrawString(raiz.Info.IdCidade + "-" + raiz.Info.NomeCidade, new Font("Comic Sans", 12),
@@ -260,7 +271,7 @@ namespace apCaminhosMarte
 
             //enquanto houver cidades a serem percorridas
             while (!caminho.EstaVazia())
-            { 
+            {
                 //desempilhamos de caminho uma id de uma cidade, verificando sua existência na árvore de cidades
                 // caso exista, a variável cidade receberá todas as informações desta cidade
                 int idCidade = caminho.Desempilhar();
@@ -270,7 +281,7 @@ namespace apCaminhosMarte
                 //refazemos as proporções do mapa de acordo com as coordenadas da cidade
                 int x1 = (cidadeAnterior.CoordenadaX * pbMapa.Width) / 4096;
                 int y1 = (cidadeAnterior.CoordenadaY * pbMapa.Height) / 2048;
-                
+
                 //refazemos as proporções do mapa de acordo com as coordenadas da cidade
                 int x2 = (cidade.CoordenadaX * pbMapa.Width) / 4096;
                 int y2 = (cidade.CoordenadaY * pbMapa.Height) / 2048;
@@ -289,7 +300,7 @@ namespace apCaminhosMarte
             //instanciamos variáveis que serão utilizadas para definir as linhas e colunas do dgv
             int linha = 0;
             int coluna;
-            
+
             dataGridView1.RowCount = caminhosPossiveis.Count; //quantidade de linhas é igual à quantidade de caminhos existentes
             dataGridView1.ColumnCount = 1;// o mesmo será feito com as colunas, mas apenas ao encontrarmos o caminho com a maior quantidade de cidades
 
@@ -329,10 +340,10 @@ namespace apCaminhosMarte
             //encontramos o melhorCaminho
             PilhaLista<int> melhorCaminho = caminhosPossiveis[0].Clone();
             var auxiliar = new PilhaLista<int>();
-            
+
             //instanciamos as linhas e colunas do dgv
             dataGridView2.RowCount = 1;
-            dataGridView2.ColumnCount = melhorCaminho.Tamanho(); 
+            dataGridView2.ColumnCount = melhorCaminho.Tamanho();
 
             //desempilhamos as ids de cidade e as empilhamos em uma variável auxiliar
             while (!melhorCaminho.EstaVazia())
@@ -341,7 +352,7 @@ namespace apCaminhosMarte
             //desempilhamos um código de cidade verificando sua existência na árvore de cidades
             //em seguida utilizamos a variável atual para recuperar o nome da cidade desempilhada e escrevê-lo na respectiva célula de acordo com sua "coluna"
             coluna = 0;
-            while(!auxiliar.EstaVazia())
+            while (!auxiliar.EstaVazia())
             {
 
                 cidades.Existe(new Cidade(auxiliar.Desempilhar(), "", 0, 0));
@@ -350,7 +361,7 @@ namespace apCaminhosMarte
                 coluna++;
             }
 
-                
+
         }
 
         /*private PilhaLista<int> SelecionarMelhorCaminho()   //retorna um inteiro o qual é o índice do melhor caminho guardado para a cidade desejada
@@ -392,13 +403,13 @@ namespace apCaminhosMarte
         {
             //utilizamos o index da linha para encontrar a qual caminho ela se refere
             //pois os index do dgv estão de acordo com a List caminhos possíveis
-            caminhoASerMostrado = caminhosPossiveis[int.Parse(e.RowIndex.ToString())].Clone(); 
+            caminhoASerMostrado = caminhosPossiveis[int.Parse(e.RowIndex.ToString())].Clone();
             //permissão para redesenhar o mapa
             pbMapa.Invalidate();
         }
 
         private void dataGridView2_CellEnter(object sender, DataGridViewCellEventArgs e)  //quando uma célula específica do dgv receber foco de entrada
-        { 
+        {
             //este dataGridView mostra apenas o melhor caminho
             caminhoASerMostrado = caminhosPossiveis[0].Clone();  //portanto o caminho a ser mostrado recebe a função que acha o melhor caminho
             pbMapa.Invalidate();                            //permite com que o pbMapa seja redesenhado, chamando o evento paint
@@ -407,11 +418,11 @@ namespace apCaminhosMarte
         private void OrdenarCaminhos()
         {
             int quantosCaminhosForam = 0;
-            while(quantosCaminhosForam < caminhosPossiveis.Count)
+            while (quantosCaminhosForam < caminhosPossiveis.Count)
             {
                 int menorCaminho = int.MaxValue;
                 int indiceMelhorCaminho = 0;
-                for(int i=quantosCaminhosForam; i<caminhosPossiveis.Count; i++)
+                for (int i = quantosCaminhosForam; i < caminhosPossiveis.Count; i++)
                 {
                     PilhaLista<int> aux = caminhosPossiveis[i].Clone();
                     int caminho = 0;
