@@ -119,9 +119,9 @@ namespace apCaminhosMarte
                 {
                     //definimos que a cidade foi percorrida
                     cidadesPercorridas[idOrigem] = true;
-                    //empilhamos o id desta cidade
+                    //empilhamos o id da cidade usada no método
                     caminho.Empilhar(idOrigem);
-                    //buscamos um novo caminho a partir desta cidade
+                    //buscamos um novo caminho a partir da última cidade encontrada
                     BuscarCaminhos(c, idDestino, 0);
                 }
             }
