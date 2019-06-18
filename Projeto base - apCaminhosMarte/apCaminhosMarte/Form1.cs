@@ -26,25 +26,33 @@ namespace apCaminhosMarte
             InitializeComponent();
         }
 
+        
         private void BtnBuscar_Click(object sender, EventArgs e)
         {
-            if (lsbOrigem.SelectedItem != null && lsbDestino.SelectedItem != null)
+            //verificamos se duas cidades foram selecionadas
+            if (lsbOrigem.SelectedItem != null && lsbDestino.SelectedItem != null) 
             {
+                //pegamos o índice das cidades de origem e destino disponíveis nos lsbs
                 int idCidadeOrigem = Int32.Parse(lsbOrigem.SelectedIndex.ToString().Split('-')[0]);
                 int idCidadeDestino = Int32.Parse(lsbDestino.SelectedIndex.ToString().Split('-')[0]);
 
+                //verificamos se origem e destino são iguais
                 if (idCidadeOrigem == idCidadeDestino)
                 {
                     MessageBox.Show("Seu ponto de partida é o mesmo que o seu destino!");
                 }
                 else
                 {
+                    //instanciamos as variáveis que serão utilizadas neste método
                     cidadesPercorridas = new bool[cidades.QuantosDados];
                     caminhosPossiveis = new List<PilhaLista<int>>();
                     caminho = new PilhaLista<int>();
                     percorreuTodosOsCaminhosPossiveis = false;
 
+                    //chamamos o método buscarCaminhos com base no destino desejado e na cidade de origem
                     BuscarCaminhos(idCidadeOrigem, idCidadeDestino, 0);
+                    //enquanto houver caminhos a serem percorridos, voltamos uma posição(uma cidade) e chamamos o método Retornar
+                    //este método
                     while (!percorreuTodosOsCaminhosPossiveis)
                     {
                         int idOrigem = caminho.Desempilhar();
@@ -56,6 +64,10 @@ namespace apCaminhosMarte
                     caminhoASerMostrado = caminhosPossiveis[0].Clone();
                     pbMapa.Invalidate();
                 }
+            }
+            else
+            {
+                MessageBox.Show("Por favor selecione uma origem e um destino");
             }
         }
         
@@ -96,10 +108,14 @@ namespace apCaminhosMarte
             }
         }
 
+        //método que faz com que a busca por caminho volte para a cidade anterior à posição atual
         private void Retornar(int idOrigem, int idDestino)
         {
+            //desempilhamos uma cidade 
             int c = caminho.Desempilhar();
+            //fazemos com que a cidade de 'idOrigem' em cidadesPercorridas fique false, pois ao voltar é como se ela nunca tivesse sido percorrida
             cidadesPercorridas[idOrigem] = false;
+            //buscamos novamente o caminho
             BuscarCaminhos(c, idDestino, idOrigem + 1);
         }
 
