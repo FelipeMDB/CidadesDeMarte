@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
 
+//Felipe Melchior de Britto  RA:18200
+//Gabrielle da Silva Barbosa RA:18200
 namespace apCaminhosMarte
 {
     public partial class Form1 : Form
@@ -286,8 +288,21 @@ namespace apCaminhosMarte
                 int x2 = (cidade.CoordenadaX * pbMapa.Width) / 4096;
                 int y2 = (cidade.CoordenadaY * pbMapa.Height) / 2048;
 
-                //desenhamos uma linha entre as duas cidades, cidadeAnterior representando a posição atual, e cidade representando aonde é necessário ir 
-                g.DrawLine(caneta, x1, y1, x2, y2); //utilizando as localizações "x" e "y" das cidades
+                if(x1-x2 > 0 && x1-x2 > (pbMapa.Width-x1)+x2)
+                {
+                    g.DrawLine(caneta, x1, y1, pbMapa.Width, (y1 + y2) / 2);
+                    g.DrawLine(caneta, x2, y2, 0, (y1 + y2) / 2);
+                }
+                else if(x2 - x1 > 0 && x2 - x1 > (pbMapa.Width - x2) + x1)
+                {
+                    g.DrawLine(caneta, x1, y1, 0, (y1 + y2) / 2);
+                    g.DrawLine(caneta, x2, y2, pbMapa.Width, (y1 + y2) / 2);
+                }
+                else
+                {
+                    //desenhamos uma linha entre as duas cidades, cidadeAnterior representando a posição atual, e cidade representando aonde é necessário ir 
+                    g.DrawLine(caneta, x1, y1, x2, y2); //utilizando as localizações "x" e "y" das cidades
+                }
 
                 //fazemos com que o destino se torne a origem, para refazer o processo
                 cidadeAnterior = cidade;
@@ -364,7 +379,65 @@ namespace apCaminhosMarte
 
         }
 
-        /*private PilhaLista<int> SelecionarMelhorCaminho()   //retorna um inteiro o qual é o índice do melhor caminho guardado para a cidade desejada
+        
+
+        private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e) //quando uma célula específica do dgv receber foco de entrada
+        {
+            //utilizamos o index da linha para encontrar a qual caminho ela se refere
+            //pois os index do dgv estão de acordo com a List caminhos possíveis
+            caminhoASerMostrado = caminhosPossiveis[int.Parse(e.RowIndex.ToString())].Clone();
+            //permissão para redesenhar o mapa
+            pbMapa.Invalidate();
+        }
+
+        private void dataGridView2_CellEnter(object sender, DataGridViewCellEventArgs e)  //quando uma célula específica do dgv receber foco de entrada
+        {
+            //este dataGridView mostra apenas o melhor caminho
+            caminhoASerMostrado = caminhosPossiveis[0].Clone();  //portanto o caminho a ser mostrado recebe a função que acha o melhor caminho
+            pbMapa.Invalidate();                            //permite com que o pbMapa seja redesenhado, chamando o evento paint
+        }
+
+        private void OrdenarCaminhos()
+        {
+            int[] distancias = new int[caminhosPossiveis.Count];
+
+            for (int i = 0; i < caminhosPossiveis.Count; i++)
+            {
+                PilhaLista<int> aux = caminhosPossiveis[i].Clone();
+                int caminho = 0;
+                int anterior = aux.Desempilhar();
+                while (!aux.EstaVazia())
+                {
+                    int cidade = aux.Desempilhar();
+                    caminho += adjacencias[anterior, cidade];
+                    anterior = cidade;
+                }
+                distancias[i] = caminho;
+            }
+
+            int quantosCaminhosForam = 0;
+            int indiceMenorCaminho = 0;
+            while(quantosCaminhosForam < caminhosPossiveis.Count)
+            {
+                int menorCaminho = int.MaxValue;
+
+                for (int i = quantosCaminhosForam; i < caminhosPossiveis.Count; i++)
+                    if (distancias[i] < menorCaminho)
+                    {
+                        menorCaminho = distancias[i];
+                        indiceMenorCaminho = i;
+                    }
+
+                PilhaLista<int> melhor = caminhosPossiveis[indiceMenorCaminho].Clone();
+                caminhosPossiveis.RemoveAt(indiceMenorCaminho);
+                caminhosPossiveis.Insert(quantosCaminhosForam, melhor);
+                quantosCaminhosForam++;
+            }
+
+        }
+
+        //método não é mais utilizado por conta de usarmos o ordenar caminhos, que deixa o melhor caminho sempre na primeira posição
+        private PilhaLista<int> SelecionarMelhorCaminho()   //retorna um inteiro o qual é o índice do melhor caminho guardado para a cidade desejada
         {
             
             PilhaLista<int> melhorCaminho = new PilhaLista<int>();//criamos uma nova pilha a qual será retornada no final do método contendo o melhor caminho possível
@@ -397,80 +470,6 @@ namespace apCaminhosMarte
                 }
             }
             return melhorCaminho;
-        } */
-
-        private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e) //quando uma célula específica do dgv receber foco de entrada
-        {
-            //utilizamos o index da linha para encontrar a qual caminho ela se refere
-            //pois os index do dgv estão de acordo com a List caminhos possíveis
-            caminhoASerMostrado = caminhosPossiveis[int.Parse(e.RowIndex.ToString())].Clone();
-            //permissão para redesenhar o mapa
-            pbMapa.Invalidate();
-        }
-
-        private void dataGridView2_CellEnter(object sender, DataGridViewCellEventArgs e)  //quando uma célula específica do dgv receber foco de entrada
-        {
-            //este dataGridView mostra apenas o melhor caminho
-            caminhoASerMostrado = caminhosPossiveis[0].Clone();  //portanto o caminho a ser mostrado recebe a função que acha o melhor caminho
-            pbMapa.Invalidate();                            //permite com que o pbMapa seja redesenhado, chamando o evento paint
-        }
-
-        private void OrdenarCaminhos()
-        {
-            int quantosCaminhosForam = 0;
-            while (quantosCaminhosForam < caminhosPossiveis.Count)
-            {
-                int menorCaminho = int.MaxValue;
-                int indiceMelhorCaminho = 0;
-                for (int i = quantosCaminhosForam; i < caminhosPossiveis.Count; i++)
-                {
-                    PilhaLista<int> aux = caminhosPossiveis[i].Clone();
-                    int caminho = 0;
-                    int anterior = aux.Desempilhar();
-                    while (!aux.EstaVazia())
-                    {
-                        int cidade = aux.Desempilhar();
-                        caminho += adjacencias[anterior, cidade];
-                        anterior = cidade;
-                    }
-                    if (menorCaminho > caminho)
-                    {
-                        indiceMelhorCaminho = i;
-                        menorCaminho = caminho;
-                    }
-                }
-
-                PilhaLista<int> melhor = caminhosPossiveis[indiceMelhorCaminho].Clone();
-                caminhosPossiveis.RemoveAt(indiceMelhorCaminho);
-                caminhosPossiveis.Insert(quantosCaminhosForam, melhor);
-                quantosCaminhosForam++;
-            }
-
-        }
-
-        //private void OrdenarCaminhos2()
-        //{
-        //    int[] distancias = new int[caminhosPossiveis.Count];
-        //    int quantosCaminhosForam = 0;
-        //    while (quantosCaminhosForam < caminhosPossiveis.Count)
-        //    {
-        //        int menorCaminho = int.MaxValue;
-        //        for (int i = quantosCaminhosForam; i < caminhosPossiveis.Count; i++)
-        //        {
-        //            PilhaLista<int> aux = caminhosPossiveis[i];
-        //            int caminho = 0;
-        //            int anterior = aux.Desempilhar();
-        //            while (!aux.EstaVazia())
-        //            {
-        //                int cidade = aux.Desempilhar();
-        //                caminho += adjacencias[anterior, cidade];
-        //                cidade = anterior;
-        //            }
-        //            distancias[] = caminho;
-        //            quantosCaminhosForam++;
-        //        }
-        //    }
-
-        //}
+        } 
     }
 }

@@ -47,3 +47,4 @@ C:\Users\gabri\OneDrive\Documentos\GitHub\Projeto base - apCaminhosMarte\apCamin
 C:\Users\gabri\OneDrive\Documentos\GitHub\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.csproj.CoreCompileInputs.cache
 C:\Users\gabri\OneDrive\Documentos\GitHub\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.exe
 C:\Users\gabri\OneDrive\Documentos\GitHub\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.pdb
+C:\Users\gabri\OneDrive\Documentos\GitHub\CidadesDeMarte\Projeto base - apCaminhosMarte\apCaminhosMarte\obj\Debug\apCaminhosMarte.csprojAssemblyReference.cache
