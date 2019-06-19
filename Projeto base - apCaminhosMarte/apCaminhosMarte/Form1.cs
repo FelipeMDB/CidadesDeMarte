@@ -62,12 +62,17 @@ namespace apCaminhosMarte
                         int idOrigem = caminho.Desempilhar();
                         Retornar(idOrigem, idCidadeDestino);
                     }
-                    //ordenamos os caminhos encontrados do melhor para o pior 
-                    OrdenarCaminhos();
-                    //exibimos os caminhos no gridView
-                    ExibirCaminhos();
                     //o caminho a ser mostrado(desenhado) por padrão será o do index 0 do dgv, pois de acordo com a ordenação, este trata-se do melhor caminho
-                    caminhoASerMostrado = caminhosPossiveis[0].Clone();
+                    if (caminhosPossiveis.Count > 0)
+                    {
+                        //ordenamos os caminhos encontrados do melhor para o pior 
+                        OrdenarCaminhos();
+                        //exibimos os caminhos no gridView
+                        ExibirCaminhos();
+                        caminhoASerMostrado = caminhosPossiveis[0].Clone();
+                    }
+                    else
+                        MessageBox.Show("Não há caminhos");
                     //permitimos que o mapa seja redesenhado
                     pbMapa.Invalidate();
                 }
@@ -182,7 +187,6 @@ namespace apCaminhosMarte
             {
                 CaminhoEntreCidades caminho = CaminhoEntreCidades.LerArquivo(arq);
                 adjacencias[caminho.IdCidadeOrigem, caminho.IdCidadeDestino] = caminho.Distancia;
-                adjacencias[caminho.IdCidadeDestino, caminho.IdCidadeOrigem] = caminho.Distancia;
             }
             arq.Close();
 
@@ -244,7 +248,7 @@ namespace apCaminhosMarte
         {
             Graphics gr = e.Graphics;
             DesenharCidade(cidades.Raiz, gr);
-            if (caminhoASerMostrado != null)
+            if (caminhoASerMostrado != null && caminhosPossiveis.Count > 0)
                 DesenharCaminho(caminhoASerMostrado.Clone(), e.Graphics);
 
         }
@@ -353,7 +357,6 @@ namespace apCaminhosMarte
                 linha++;
             }
 
-
             //encontramos o melhorCaminho
             PilhaLista<int> melhorCaminho = caminhosPossiveis[0].Clone();
             var auxiliar = new PilhaLista<int>();
@@ -377,8 +380,6 @@ namespace apCaminhosMarte
                 dataGridView2.Rows[0].Cells[coluna].Value = cidades.Atual.Info.NomeCidade;
                 coluna++;
             }
-
-
         }
 
         
@@ -411,7 +412,7 @@ namespace apCaminhosMarte
                 while (!aux.EstaVazia())
                 {
                     int cidade = aux.Desempilhar();
-                    caminho += adjacencias[anterior, cidade];
+                    caminho += adjacencias[cidade, anterior];
                     anterior = cidade;
                 }
                 distancias[i] = caminho;
@@ -458,7 +459,7 @@ namespace apCaminhosMarte
                     int cidade = aux.Desempilhar();//desempilharemos o id de uma cidade
                     //somaremos o valor de distância da cidade que teve o id desempilhado através da matriz adjacências
                     //que possue como valor a distância a ser percorrida de seu ponto de origem até seu ponto de destino
-                    distanciaTotal += adjacencias[anterior, cidade];
+                    distanciaTotal += adjacencias[cidade, anterior];
                     anterior = cidade; //fazemos com que a variável de origem receba o destino, de certa forma como se o usuário tivesse percorrido o caminho até a cidade
                 }
 
